@@ -1,0 +1,16 @@
+version: "3.3"
+
+services:
+  webserver:
+    build:
+      context: server
+    container_name: "SwissEphemeris-server"
+    restart: 'always'
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - ./server/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./server/config/xdebug/xdebug.ini:/etc/php/7.3/mods-available/xdebug.ini
+      - ./server/config/vhosts:/etc/apache2/sites-enabled
+      - ./server/logs:/var/log/apache2
