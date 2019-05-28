@@ -6,7 +6,7 @@ use App\SwissEphemeris\SwissEphemerisRepository;
 
 $test = new SwissEphemerisRepository();
 
-$test->getSun();
+$test->getZodiacSideral();
 
 
 ?>
