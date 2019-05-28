@@ -18,14 +18,15 @@ class SwissEphemeris
     /**
      * @var
      */
-    private $lib_phat;
+    protected $lib_phat;
 
+    protected $name;
     /**
      * Latitude Longitude
      * of Ulzburg, Germany
      */
-    private $latitude = 53.925724699999996;
-    private $longitude = 9.8570529;
+    protected $latitude = 53.925724699999996;
+    protected $longitude = 9.8570529;
 
     /**
      * Timezone value for Europe/Berlin
@@ -33,20 +34,20 @@ class SwissEphemeris
      *
      * Put this value according to your country
      */
-    private $timezone = 'Europe/Berlin';
+    protected $timezone = 'Europe/Berlin';
 
 
     /*
      * 3600 seconds * timezone = offset
      *
      * */
-    private $offset;
+    protected $offset;
 
-    private $time;
+    protected $time;
 
-    private $date;
+    protected $date;
 
-    private $query = null;
+    protected $query = null;
 
     /*
      *  Output format SEQ letters:
@@ -58,45 +59,45 @@ class SwissEphemeris
     /**
      * @var string
      */
-    private $output_format = 'PLBRS';
+    protected $output_format = 'PLBRS';
 
 
     /**
      * @var string
      * type PHP_ARRAY, JSON, PLAIN
      */
-    private $output_render_type = 'PHP_ARRAY';
+    protected $output_render_type = 'PHP_ARRAY';
 
 
     /**
      * @var null
      * save in output the response from the console exec in a single string
      */
-    private $response = null;
+    protected $response = null;
 
 
     /**
      * @var null
      * save in output the response from the console exec in a array
      */
-    private $output = null;
+    protected $output = null;
 
 
     /**
      * @var string
      * delimiter for explode output to array
      */
-    private $delimiter = ',';
+    protected $delimiter = ',';
 
     /**
      * @var null
      * status code from the response of console exec
      */
-    private $status = null;
+    protected $status = null;
 
-    private $debug_header = FALSE;
+    protected $debug_header = FALSE;
 
-    private $default_phat = '/sweph/';
+    protected $default_phat = '/sweph/';
 
 
     /**
@@ -154,6 +155,23 @@ class SwissEphemeris
         return $this;
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
 
     /**
      * @return mixed
@@ -489,23 +507,27 @@ class SwissEphemeris
 
     public function encodePhpArray($output)
     {
-        // is it array and delemiter data
+        // is it array
         if (is_array($output)) {
 
             $php_array = null;
 
             foreach ($output as $value) {
 
+                // have delimiter ,
                 if ($this->isDelimiter($value)) {
                     $php_array[] = $this->splitOutput($value);
 
+                    // have no delimiter
+                } else {
+                    $php_array = $output;
                 }
 
             }
 
             $output = $php_array;
         }
-// todo
+
 
         return $output;
     }
@@ -530,6 +552,19 @@ class SwissEphemeris
         }
     }
 
+    public function getSiderealMethodName($sid = null)
+    {
+
+        $sidereal = [
+            0 => 'Fagan/Bradley',
+            1 => 'Lahiri',
+            2 => 'De Luce',
+        ];
+
+        return $sidereal[$sid];
+
+    }
+
     /**
      * @return $this
      * @throws Exception
@@ -545,10 +580,24 @@ class SwissEphemeris
             $this->setOutputRenderType('PLAIN');
         }
 
+
+        // if query use sidereal function 0 - 38
+        if (preg_match('/-sid([0-3,0-8]+)/', $this->query, $matches)) {
+            // cutout sidereal function id
+            // set sidereal name
+            $this->setName($this->getSiderealMethodName($matches[1]));
+        } else {
+
+            // else set the name of the planet
+            $this->setName($output[0]);
+        }
+
+        // output
         $this->response = $output;
         $this->output = $this->outputEncoder($output);
         $this->status = $status;
 
+        // unknown error query syntax error
         if ($this->status === 127) {
             throw new SwissEphemerisException('Illegal command!');
         }
