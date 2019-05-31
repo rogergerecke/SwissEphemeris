@@ -469,16 +469,17 @@ class SwissEphemeris
     public function query($query)
     {
 
-        if (is_array($query)) {
+        // if array given compile
+        if (is_array($query) and !empty($query)) {
             $query = $this->compiler($query);
         }
 
+        // if query empty exception
+        if (is_null($query)) {
+            throw new SwissEphemerisException('Query cant not be empty!');
+        }
 
         $this->query = "swetest -edir$this->lib_phat $query";
-
-        if (is_null($this->query)) {
-            throw new SwissEphemerisException('Query is empty!');
-        }
 
         return $this;
     }
