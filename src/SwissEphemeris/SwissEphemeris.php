@@ -484,6 +484,11 @@ class SwissEphemeris
         return $this;
     }
 
+
+    /**
+     * @param $output
+     * @return array[]|false|string[]
+     */
     public function splitOutput($output)
     {
         return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
