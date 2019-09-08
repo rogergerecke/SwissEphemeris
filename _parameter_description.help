@@ -454,6 +454,7 @@ MORE INFO ON https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
 	ephemeris of Mercury (-p2) starting on 1 Dec 1900,
 	15 positions (-n15) in two-day steps (-s2)
 
+
     swetest -p2 -b1.12.1900 -n15 -s2 -fTZ -roundsec -g, -head
 	same, but output format =  date and zodiacal position (-fTZ),
 	separated by comma (-g,) and rounded to seconds (-roundsec),
