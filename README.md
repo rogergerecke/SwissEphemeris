@@ -6,5 +6,13 @@ Zur berechnung verschidenen Astrologischer Objekt-Position Basis zur berechnung 
 Für Beispiele schau dir die index.php an oder die SwissEphemerisRepository.php
 
 ---
-More info:
-[SWISS EPHEMERIS](https://www.astro.com/swisseph/swephinfo_e.htm)
+
+Info
+---
+[Swiss Ephemeris Website](https://www.astro.com/swisseph/swephinfo_e.htm)
+[Swiss Ephemeris Download lib](http://www.astro.com/ftp/swisseph/)
+
+UPDATE
+---
+- Update to Swiss Ephemeris 2.0.8
+- Update mit Github Branch to the same version number
