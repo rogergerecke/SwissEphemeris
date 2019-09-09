@@ -13,6 +13,10 @@ Info
 
 [Swiss Ephemeris Download lib](http://www.astro.com/ftp/swisseph/)
 
+[Swiss Ephemeris Examples Interface](https://www.astro.com/ftp/swisseph/doc/swephprg.htm)
+
+[Swiss Ephemeris Examples](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
+
 UPDATE
 ---
 - Update to Swiss Ephemeris 2.0.8
