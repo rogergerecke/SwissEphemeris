@@ -1,4 +1,6 @@
-Swiss Ephemeris PHP Classen
+Swiss Ephemeris PHP Classes
+
+Getting Planets Position using PHP & AstroDienst Swiss Ephemeris library.  Use the Repository class to extend it for you.
 
 Zur berechnung verschidenen Astrologischer Objekt-Position Basis zur berechnung sind die Daten von
 [http://www.astro.com/ftp/swisseph/ephe/ ](http://www.astro.com/ftp/swisseph/ephe/ )
@@ -13,7 +15,10 @@ Info
 
 [Swiss Ephemeris Download lib](http://www.astro.com/ftp/swisseph/)
 
+[Swiss Ephemeris Examples Interface](https://www.astro.com/ftp/swisseph/doc/swephprg.htm)
+
+[Swiss Ephemeris Examples](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
+
 UPDATE
 ---
 - Update to Swiss Ephemeris 2.0.8
-- Update mit Github Branch to the same version number

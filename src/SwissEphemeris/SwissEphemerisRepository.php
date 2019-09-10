@@ -32,7 +32,7 @@ class SwissEphemerisRepository extends SwissEphemeris
             'n' => 1,
             'f' => 'Z',
             'sid' => '1', // sideral Lahiri Ayanamsa
-            'r'=>'oundsec'
+            'r' => 'oundsec'
 
 
         ];
@@ -60,32 +60,12 @@ class SwissEphemerisRepository extends SwissEphemeris
         return $this->query($parameter)->execute()->getOutput();
     }
 
-
     /**
      * @param null $date
      * @return |null
      * @throws \Exception
      *
-     * Get only data for planet mars
-     */
-    public function getMars($date = null)
-    {
-
-        $parameter = [
-            'b' => $date,
-            'p' => '4',// planet Mars
-
-        ];
-
-        return $this->query($parameter)->execute()->getOutput();
-    }
-
-    /**
-     * @param null $date
-     * @return |null
-     * @throws \Exception
-     *
-     * Get only data for planet
+     * Get only data for planet SUN
      */
     public function getSun($date = null)
     {
@@ -101,17 +81,35 @@ class SwissEphemerisRepository extends SwissEphemeris
 
     /**
      * @param null $date
-     * @return |null
+     * @return null |null
      * @throws \Exception
-     *
-     * Get only data for planet
+     * Get only data for planet MOON heliocentric
      */
     public function getMoon($date = null)
     {
 
         $parameter = [
             'b' => $date,
-            'p' => '1',// planet
+            'p' => '1',// planet 1 Moon
+            'h' => 'el'
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws \Exception
+     * Get only data for planet MERCURY heliocentric
+     */
+    public function getMercury($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '2',// planet 2 Mercury
+            'h' => 'el'
 
         ];
 
@@ -120,22 +118,42 @@ class SwissEphemerisRepository extends SwissEphemeris
 
     /**
      * @param null $date
-     * @return |null
+     * @return null |null
      * @throws \Exception
-     *
-     * Get only data for planet
+     * Get only data for planet VENUS heliocentric
      */
-    public function getMercury($date = null)
+    public function getVenus($date = null)
     {
 
         $parameter = [
             'b' => $date,
-            'p' => '2',// planet
+            'p' => '3',// planet 3 Venus
+            'h' => 'el'
 
         ];
 
         return $this->query($parameter)->execute()->getOutput();
     }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws \Exception
+     * Get only data for planet mars heliocentric
+     */
+    public function getMars($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '4',// planet 4 Mars
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
 
 
 }
