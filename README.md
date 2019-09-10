@@ -19,7 +19,7 @@ Info
 
 [Swiss Ephemeris Examples](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
 
-UPDATE
+UPDATE 2.0.9
 ---
 - Update to wonderful Swiss Ephemeris 2.0.8
 - Extend Repository class
