@@ -4,13 +4,10 @@ include_once __DIR__ . '/../vendor/autoload.php';
 
 use App\SwissEphemeris\SwissEphemerisRepository;
 
-$test = new SwissEphemerisRepository();
-
-$test->getZodiacSideral();
-
+// create a new object AND HAVE FUN TO USE IT
+$obj = new SwissEphemerisRepository();
 
 ?>
-
 <!doctype html>
 <html lang="de">
 <head>
@@ -22,47 +19,96 @@ $test->getZodiacSideral();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Teste es</title>
+    <title>Test the Swiss Ephemeris PHP class</title>
 </head>
 <body>
-<h1>Zodiac</h1>
+<div class="container-fluid">
 
-<hr>
-<?php print_r($test); ?>
-<hr>
 
-<h2>Beispiele</h2>
+    <div class="row bg-info">
+        <div class="col-md-6">
+            <h1 class="h6">Example Zodiac Sideral use Repository class --------></h1>
 <pre>
-    swetest -p2 -b1.12.1900 -n15 -s2
-    ephemeris of Mercury (-p2) starting on 1 Dec 1900,
-    15 positions (-n15) in two-day steps (-s2)
+<code>
+ // create a new object AND HAVE FUN TO USE IT
+$obj = new SwissEphemerisRepository();
+print_r($obj->getZodiacSideral());
+ </code>
+ </pre>
+        </div>
+
+        <div class="col-md-6">
+            <p>output:</p>
+            <div class="alert alert-secondary" role="alert">
+                <?php print_r($obj->getZodiacSideral()); ?>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="h6">Example use dynamic query -------></h2>
+ <pre>
+<code>
+swetest -p2 -b1.12.1900 -n15 -s2
+ephemeris of Mercury (-p2) starting on 1 Dec 1900,
+15 positions (-n15) in two-day steps (-s2)
+
+     $query = [
+         'p' => 2,
+         'b' => '1.12.1900',
+         'n' => 15,
+         's' => 2
+     ];
+     $obj->query($query)->execute();
+     print_r($obj->getOutput())
+ </code>
 </pre>
+</div>
+        <div class="col-md-6">
+            <p>output:</p>
+            <div class="alert alert-secondary" role="alert">
+            <?php
+            $query = [
+                'p' => 2,
+                'b' => '1.12.1900',
+                'n' => 15,
+                's' => 2
+            ];
+            $obj->query($query)->execute();
+            print_r($obj->getOutput())
+            ?>
 
-<?php
-$Mercury = new SwissEphemerisRepository();
-$query = [
-    'p' => 2,
-    'b' => '1.12.1900',
-    'n' => 15,
-    's' => 2
-];
-    $Mercury->query($query)->execute();
-    ?>
+            </div>
+        </div>
+    </div>
+    <hr>
 
-<?php
-foreach ($Mercury->getOutput() as $t) {
-    if (is_array($t)) {
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="h6">Example with repository class -----></h3>
+            <div class="alert alert-success" role="alert">
+                Tip: I think extend the repository class for your needs is the best patrice
+            </div>
+    <pre>
+        <code>
+// output venus data from today
+print_r($obj->getVenus()
+        </code>
+    </pre>
+        </div>
+        <div class="col-md-6">
+            <p>output:</p>
+            <div class="alert alert-danger" role="alert">
+            <?php print_r($obj->getVenus())?>
+            </div>
+        </div>
+    </div>
+</div>
 
-        foreach ($t as $item) {
-            echo '<samp>' . $item . '</samp><br>';
-        }
 
-    } else {
-        echo $t . '<br>';
-    }
-
-}
-?>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

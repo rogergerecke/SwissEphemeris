@@ -14,18 +14,25 @@ use Exception;
  */
 class SwissEphemeris
 {
-    // path to swiss ephemeris library files
     /**
      * @var
+     * path to swiss ephemeris library files
      */
     protected $lib_phat;
 
+    /**
+     * @var
+     */
     protected $name;
     /**
      * Latitude Longitude
-     * of Ulzburg, Germany
+     * of Henstedt-Ulzburg, Germany
+     * my view position to the all
      */
     protected $latitude = 53.925724699999996;
+    /**
+     * @var float
+     */
     protected $longitude = 9.8570529;
 
     /**
@@ -33,6 +40,7 @@ class SwissEphemeris
      * 2 hours ahead of UTC
      *
      * Put this value according to your country
+     * for your origin position view
      */
     protected $timezone = 'Europe/Berlin';
 
@@ -41,12 +49,24 @@ class SwissEphemeris
      * 3600 seconds * timezone = offset
      *
      * */
+    /**
+     * @var
+     */
     protected $offset;
 
+    /**
+     * @var
+     */
     protected $time;
 
+    /**
+     * @var
+     */
     protected $date;
 
+    /**
+     * @var null
+     */
     protected $query = null;
 
     /*
@@ -55,9 +75,9 @@ class SwissEphemeris
      *  the default format PLBRS. You can change the default by providing an
      *  option like -fCCCC where CCCC is your sequence of columns.
     */
-
     /**
      * @var string
+     * PLBRS is the standart output format with five array keys [0]-> .. [4]
      */
     protected $output_format = 'PLBRS';
 
@@ -95,8 +115,18 @@ class SwissEphemeris
      */
     protected $status = null;
 
+
+    /**
+     * @var bool
+     * show the debug header output = FALSE
+     */
     protected $debug_header = FALSE;
 
+
+    /**
+     * @var string
+     * phat to the swiss lib you cant set the phat to other swiss lib over constructor
+     */
     protected $default_phat = '/sweph/';
 
 
@@ -277,7 +307,7 @@ class SwissEphemeris
         // if date null set date now
         if (is_null($date)) {
             $date = new DateTime('NOW', new DateTimeZone($this->timezone));
-            $date = $date->format('d.m.Y');
+            $date = $date->format('d.m.Y'); // Germany date format
         }
 
         $this->date = $date;
@@ -494,6 +524,10 @@ class SwissEphemeris
         return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
     }
 
+    /**
+     * @param $output
+     * @return array|mixed|null
+     */
     public function outputEncoder($output)
     {
         switch ($this->getOutputRenderType()) {
@@ -511,6 +545,10 @@ class SwissEphemeris
         return $output;
     }
 
+    /**
+     * @param $output
+     * @return array|null
+     */
     public function encodePhpArray($output)
     {
         // is it array
@@ -538,6 +576,10 @@ class SwissEphemeris
         return $output;
     }
 
+    /**
+     * @param $output
+     * @return mixed
+     */
     public function encodeJson($output)
     {
 // todo
@@ -558,6 +600,10 @@ class SwissEphemeris
         }
     }
 
+    /**
+     * @param null $sid
+     * @return mixed
+     */
     public function getSiderealMethodName($sid = null)
     {
 
