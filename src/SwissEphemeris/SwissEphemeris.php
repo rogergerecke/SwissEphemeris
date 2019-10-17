@@ -78,6 +78,11 @@ class SwissEphemeris
     /**
      * @var string
      * PLBRS is the standart output format with five array keys [0]-> .. [4]
+     * - P planet name
+     * - L longitude in degree ddd mm'ss"
+     * - B latitude degree
+     * - R distance decimal in AU
+     * - S speed in longitude in degree ddd:mm:ss per day
      */
     protected $output_format = 'PLBRS';
 
@@ -142,6 +147,7 @@ class SwissEphemeris
         if (is_null($lib_phat) or empty($lib_phat)) {
             $lib_phat = __DIR__ . $this->default_phat;
         }
+
         $this->setLibPhat($lib_phat);
 
 
@@ -171,9 +177,11 @@ class SwissEphemeris
 
         if (is_dir($lib_phat) and is_file($lib_phat . 'swetest')) {
 
-            putenv('PATH=' . $lib_phat); //console script need phat variable !!!!
+            //console script need phat variable this variable is set only for request and request time!!!!
+            // safe_mode_allowed_env_vars must allow by your hoster
+            putenv('PATH=' . $lib_phat);
             //**************************************************************************
-
+// todo add a check of the path variable would set but getenv dosnt works corect i dosnt have any idea to a better working resault
             $this->lib_phat = $lib_phat;
 
         } else {
@@ -212,6 +220,7 @@ class SwissEphemeris
     }
 
     /**
+     * todo add
      * @param mixed $latitude
      */
     public function setLatitude($latitude): void
@@ -254,6 +263,7 @@ class SwissEphemeris
 
 
     /**
+     * todo add
      * @return int
      */
     public function getOffset(): int
@@ -483,7 +493,7 @@ class SwissEphemeris
 
         // if debug mode on add query option
         if (!$this->isDebugHeader()) {
-            // by default remove header
+            // by default remove header debug = FALSE
             $options[] = '-head';
         }
 
@@ -537,6 +547,8 @@ class SwissEphemeris
             case 'JSON':
                 $output = $this->encodeJson($output);
                 break;
+            case 'PLAIN':
+                // nothing to do;
             default:
                 return $output;
 
@@ -576,14 +588,14 @@ class SwissEphemeris
         return $output;
     }
 
+
     /**
      * @param $output
-     * @return mixed
+     * @return false|string
      */
     public function encodeJson($output)
     {
-// todo
-        return $output;
+        return json_encode($output);
     }
 
 
@@ -601,10 +613,10 @@ class SwissEphemeris
     }
 
     /**
-     * @param null $sid
-     * @return mixed
+     * @param int $sid
+     * @return string
      */
-    public function getSiderealMethodName($sid = null)
+    public function getSiderealMethodName(int $sid = null): string
     {
 
         $sidereal = [
@@ -663,6 +675,9 @@ class SwissEphemeris
         // More about command line options: https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
         exec($this->query, $output, $status);
 
+        // save status response
+        $this->setStatus($status);
+
 
         // if debug true dont encode output
         if ($this->isDebugHeader()) {
@@ -682,13 +697,12 @@ class SwissEphemeris
         }
 
         // output
-        $this->response = $output;
-        $this->output = $this->outputEncoder($output);
-        $this->status = $status;
+        $this->setResponse($output);
+        $this->setOutput($this->outputEncoder($output));
 
         // unknown error query syntax error
         if ($this->status === 127) {
-            throw new SwissEphemerisException('Illegal command!');
+            throw new SwissEphemerisException('Illegal command: unknown error query syntax error!');
         }
 
         return $this;
