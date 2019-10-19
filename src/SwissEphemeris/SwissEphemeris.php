@@ -29,12 +29,18 @@ class SwissEphemeris
      * of Henstedt-Ulzburg, Germany
      * my view position to the all
      */
-    protected $latitude = 53.925724699999996;
+    protected $latitude = '53,925724699999996';
     /**
      * @var float
      */
-    protected $longitude = 9.8570529;
+    protected $longitude = '9,8570529';
 
+
+    /**
+     * Use variable above
+     * @var bool
+     */
+    protected $geopositon = TRUE;
     /**
      * Timezone value for Europe/Berlin
      * 2 hours ahead of UTC
@@ -460,7 +466,9 @@ class SwissEphemeris
      * */
 
     /**
-     * Query array to string transformation
+     * Convert the query array to string for the console:
+     * swetest -p2 -b1.12.1900 -n15 -s2 -fTZ -roundsec -g, -head
+     *
      * @param $query
      * @return string
      * @throws Exception
@@ -473,6 +481,11 @@ class SwissEphemeris
         if (!array_key_exists('b', $query) or is_null($query['b'])) {
             $this->setDate(null);
             $query['b'] = $this->getDate();
+        }
+
+        // if geoposition use true (default Green Witch) TODO dont work colision ? heliocentric
+        if ($this->geopositon) {
+            $options[] = '-geopos' . $this->longitude . '.' . $this->latitude;
         }
 
         // compile array to query string
@@ -509,16 +522,17 @@ class SwissEphemeris
     public function query($query)
     {
 
-        // if array given compile
+        // run query with array of option compiled to a string for the console
         if (is_array($query) and !empty($query)) {
             $query = $this->compiler($query);
         }
 
-        // if query empty exception
+        // if query empty error shown
         if (is_null($query)) {
             throw new SwissEphemerisException('Query cant not be empty!');
         }
 
+        // save the full query string for console ready to ->execute() the console
         $this->query = "swetest -edir$this->lib_phat $query";
 
         return $this;
@@ -566,7 +580,7 @@ class SwissEphemeris
         // is it array
         if (is_array($output)) {
 
-            $php_array = null;
+            $php_array = [];
 
             foreach ($output as $value) {
 
@@ -582,6 +596,7 @@ class SwissEphemeris
             }
 
             $output = $php_array;
+            $output['name'] = $this->getName();
         }
 
 
@@ -600,6 +615,7 @@ class SwissEphemeris
 
 
     /**
+     * Check if the console response array have delimiter in string.
      * @param $value
      * @return bool
      */
@@ -613,6 +629,7 @@ class SwissEphemeris
     }
 
     /**
+     * Return the real name of the Sideral Methode
      * @param int $sid
      * @return string
      */
@@ -667,6 +684,7 @@ class SwissEphemeris
     }
 
     /**
+     * Execute the string in the Library Swiss Console and the response in variables
      * @return $this
      * @throws Exception
      */
@@ -692,11 +710,12 @@ class SwissEphemeris
             $this->setName($this->getSiderealMethodName($matches[1]));
         } else {
 
+            // todo bug name setting by [name] => Mercury , 230°13'29.5446, 2°37' 3.8813, 0.838595121, 0°11'18.6244 )
             // else set the name of the planet
             $this->setName($output[0]);
         }
 
-        // output
+        // save output
         $this->setResponse($output);
         $this->setOutput($this->outputEncoder($output));
 
