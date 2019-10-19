@@ -95,7 +95,7 @@ class SwissEphemeris
 
     /**
      * @var string
-     * type PHP_ARRAY, JSON, PLAIN
+     * Default PHP_ARRAY other : JSON, PLAIN
      */
     protected $output_render_type = 'PHP_ARRAY';
 
@@ -379,6 +379,7 @@ class SwissEphemeris
     }
 
     /**
+     * Default PHP_ARRAY
      * @return string
      */
     public function getOutputRenderType(): string
@@ -545,10 +546,24 @@ class SwissEphemeris
      */
     public function splitOutput($output)
     {
-        return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
+        if (is_array($output)) {
+
+            $array = [];
+            foreach ($output as $line) {
+                $array = preg_split("~$this->delimiter~", $line, -1, PREG_SPLIT_NO_EMPTY);
+            }
+
+        } else {
+
+            return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
+
+        }
+
+        return $array;
+
     }
 
-    /**
+    /** Default PHP_ARRAY
      * @param $output
      * @return array|mixed|null
      */
@@ -577,30 +592,19 @@ class SwissEphemeris
      */
     public function encodePhpArray($output)
     {
-        // is it array
+        $php_array = array();
+        $i = 0;
         if (is_array($output)) {
-
-            $php_array = [];
 
             foreach ($output as $value) {
 
-                // have delimiter ,
-                if ($this->isDelimiter($value)) {
-                    $php_array[] = $this->splitOutput($value);
-
-                    // have no delimiter
-                } else {
-                    $php_array = $output;
-                }
-
+                $php_array[$i] = $this->splitOutput($value);
+                $php_array[$i]['name'] = $this->getName();
+                $i++;
             }
-
-            $output = $php_array;
-            $output['name'] = $this->getName();
         }
 
-
-        return $output;
+        return $php_array;
     }
 
 
@@ -693,8 +697,8 @@ class SwissEphemeris
         // More about command line options: https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
         exec($this->query, $output, $status);
 
-        // save status response
-        $this->setStatus($status);
+        // save status code
+        $this->status = $status;
 
 
         // if debug true dont encode output
@@ -710,14 +714,14 @@ class SwissEphemeris
             $this->setName($this->getSiderealMethodName($matches[1]));
         } else {
 
-            // todo bug name setting by [name] => Mercury , 230°13'29.5446, 2°37' 3.8813, 0.838595121, 0°11'18.6244 )
             // else set the name of the planet
-            $this->setName($output[0]);
+            $name = $this->splitOutput($output[0]);
+            $this->setName($name[0]);
         }
 
         // save output
-        $this->setResponse($output);
-        $this->setOutput($this->outputEncoder($output));
+        $this->response = $output;
+        $this->output = $this->outputEncoder($output);
 
         // unknown error query syntax error
         if ($this->status === 127) {
