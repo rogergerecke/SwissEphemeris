@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hilfe für rogergerecke/swiss-ephemeris</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Die Swiss Ephemeris PHP Klasse</h1>
+            <p>Version: 2.08 - <a href="https://github.com/rogergerecke/SwissEphemeris">Git Repro</a></p>
+            <p>
+                Swetest berechnet einen vollständigen Satz von geozentrischen Planetenpositionen, für ein bestimmtes
+                Datum
+                oder eine Folge von Datumsangaben. Die Eingabe kann entweder ein Datum oder eine absolute julianische
+                Tageszahl sein. 0:00 (Mitternacht).</p>
+            <p>
+                Mit den richtigen Optionen kann der Swetest zur Ausgabe eines Ausdrucks verwendet werden Ephemeride und
+                übertragen Sie die Daten in andere Programme wie Tabellenkalkulationen zur grafischen Darstellung.
+            </p>
+
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                Was sind die Swiss Ephemeris PHP Klassen
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            Die Swiss Ephemeris PHP Klassen machen die einfache nutzung der swetest möglich um mit ihr
+                            die Planetenpositionen auf einem Server in PHP nutzen zu können. Sie sind also ein
+                            PHP-Adapter zur Konsole die auf die in C geschriebene Bibiliothek swetest zugreift.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Was machen die PHP Klassen
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Die PHP Klassen greifen auf die Konsole des Betriebsystem mit <code>exec()</code> zu und
+                            binden die Ephemeris Bibiliotheken ein. Die Ausgabe der Konsole machen sie dann wieder für
+                            PHP verfügbar. Wenn man möchte kann man die Ausgabe noch formatieren lassen:
+                            <ul>
+                                <li>PHP_ARRAY</li>
+                                <li>JSON</li>
+                                <li>PLAIN</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Collapsible Group Item #3
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                            nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                            single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+                            beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                            lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
+                            probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <h2>Beschreibung</h2>
+            <p>Hier folgt eine Liste der möglichen Funktionen unterteilt in Bereiche</p>
+            <ul>
+                <li>Hilfe Komandos</li>
+                <li>Eingabe mögliche Zeitformate</li>
+                <li>Ausgabe Formateinstellung</li>
+            </ul>
+            <h3>Hilfe Komandos</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Funktion</th>
+                    <th scope="col">Beschreibung</th>
+                    <th scope="col">Mögliche Parameter</th>
+                    <th scope="col">Beispiel</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>?</code></td>
+                    <td>Das Fragezeichen löst die Anzeige aller Informationen aus.  Hilfreich zur Anzeige aller möglichen Parameter.</td>
+                    <td>keine</td>
+                    <td><code>swetest -?</code></td>
+                </tr>
+                <tr>
+                    <td><code>-hcmd</code></td>
+                    <td>Zeidt alle der möglichen Komandos an.</td>
+                    <td>keine</td>
+                    <td><code>swetest -hcmd</code></td>
+                </tr>
+                <tr>
+                    <td><code>-hplan</code></td>
+                    <td>Zeigt die möglichen Planeten Nummern an.</td>
+                    <td>keine</td>
+                    <td><code>swetest -hplan</code></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

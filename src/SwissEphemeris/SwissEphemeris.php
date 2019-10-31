@@ -14,25 +14,39 @@ use Exception;
  */
 class SwissEphemeris
 {
-    // path to swiss ephemeris library files
     /**
      * @var
+     * path to swiss ephemeris library files
      */
     protected $lib_phat;
 
+    /**
+     * @var
+     */
     protected $name;
     /**
      * Latitude Longitude
-     * of Ulzburg, Germany
+     * of Henstedt-Ulzburg, Germany
+     * my view position to the all
      */
-    protected $latitude = 53.925724699999996;
-    protected $longitude = 9.8570529;
+    protected $latitude = '53,925724699999996';
+    /**
+     * @var float
+     */
+    protected $longitude = '9,8570529';
 
+
+    /**
+     * Use variable above
+     * @var bool
+     */
+    protected $geopositon = TRUE;
     /**
      * Timezone value for Europe/Berlin
      * 2 hours ahead of UTC
      *
      * Put this value according to your country
+     * for your origin position view
      */
     protected $timezone = 'Europe/Berlin';
 
@@ -41,12 +55,24 @@ class SwissEphemeris
      * 3600 seconds * timezone = offset
      *
      * */
+    /**
+     * @var
+     */
     protected $offset;
 
+    /**
+     * @var
+     */
     protected $time;
 
+    /**
+     * @var
+     */
     protected $date;
 
+    /**
+     * @var null
+     */
     protected $query = null;
 
     /*
@@ -55,16 +81,21 @@ class SwissEphemeris
      *  the default format PLBRS. You can change the default by providing an
      *  option like -fCCCC where CCCC is your sequence of columns.
     */
-
     /**
      * @var string
+     * PLBRS is the standart output format with five array keys [0]-> .. [4]
+     * - P planet name
+     * - L longitude in degree ddd mm'ss"
+     * - B latitude degree
+     * - R distance decimal in AU
+     * - S speed in longitude in degree ddd:mm:ss per day
      */
     protected $output_format = 'PLBRS';
 
 
     /**
      * @var string
-     * type PHP_ARRAY, JSON, PLAIN
+     * Default PHP_ARRAY other : JSON, PLAIN
      */
     protected $output_render_type = 'PHP_ARRAY';
 
@@ -95,8 +126,18 @@ class SwissEphemeris
      */
     protected $status = null;
 
+
+    /**
+     * @var bool
+     * show the debug header output = FALSE
+     */
     protected $debug_header = FALSE;
 
+
+    /**
+     * @var string
+     * phat to the swiss lib you cant set the phat to other swiss lib over constructor
+     */
     protected $default_phat = '/sweph/';
 
 
@@ -112,6 +153,7 @@ class SwissEphemeris
         if (is_null($lib_phat) or empty($lib_phat)) {
             $lib_phat = __DIR__ . $this->default_phat;
         }
+
         $this->setLibPhat($lib_phat);
 
 
@@ -141,9 +183,11 @@ class SwissEphemeris
 
         if (is_dir($lib_phat) and is_file($lib_phat . 'swetest')) {
 
-            putenv('PATH=' . $lib_phat); //console script need phat variable !!!!
+            //console script need phat variable this variable is set only for request and request time!!!!
+            // safe_mode_allowed_env_vars must allow by your hoster
+            putenv('PATH=' . $lib_phat);
             //**************************************************************************
-
+// todo add a check of the path variable would set but getenv dosnt works corect i dosnt have any idea to a better working resault
             $this->lib_phat = $lib_phat;
 
         } else {
@@ -182,6 +226,7 @@ class SwissEphemeris
     }
 
     /**
+     * todo add
      * @param mixed $latitude
      */
     public function setLatitude($latitude): void
@@ -224,6 +269,7 @@ class SwissEphemeris
 
 
     /**
+     * todo add
      * @return int
      */
     public function getOffset(): int
@@ -277,7 +323,7 @@ class SwissEphemeris
         // if date null set date now
         if (is_null($date)) {
             $date = new DateTime('NOW', new DateTimeZone($this->timezone));
-            $date = $date->format('d.m.Y');
+            $date = $date->format('d.m.Y'); // Germany date format
         }
 
         $this->date = $date;
@@ -333,6 +379,7 @@ class SwissEphemeris
     }
 
     /**
+     * Default PHP_ARRAY
      * @return string
      */
     public function getOutputRenderType(): string
@@ -420,7 +467,9 @@ class SwissEphemeris
      * */
 
     /**
-     * Query array to string transformation
+     * Convert the query array to string for the console:
+     * swetest -p2 -b1.12.1900 -n15 -s2 -fTZ -roundsec -g, -head
+     *
      * @param $query
      * @return string
      * @throws Exception
@@ -433,6 +482,11 @@ class SwissEphemeris
         if (!array_key_exists('b', $query) or is_null($query['b'])) {
             $this->setDate(null);
             $query['b'] = $this->getDate();
+        }
+
+        // if geoposition use true (default Green Witch) TODO dont work colision ? heliocentric
+        if ($this->geopositon) {
+            $options[] = '-geopos' . $this->longitude . '.' . $this->latitude;
         }
 
         // compile array to query string
@@ -453,7 +507,7 @@ class SwissEphemeris
 
         // if debug mode on add query option
         if (!$this->isDebugHeader()) {
-            // by default remove header
+            // by default remove header debug = FALSE
             $options[] = '-head';
         }
 
@@ -469,16 +523,17 @@ class SwissEphemeris
     public function query($query)
     {
 
-        // if array given compile
+        // run query with array of option compiled to a string for the console
         if (is_array($query) and !empty($query)) {
             $query = $this->compiler($query);
         }
 
-        // if query empty exception
+        // if query empty error shown
         if (is_null($query)) {
             throw new SwissEphemerisException('Query cant not be empty!');
         }
 
+        // save the full query string for console ready to ->execute() the console
         $this->query = "swetest -edir$this->lib_phat $query";
 
         return $this;
@@ -491,9 +546,27 @@ class SwissEphemeris
      */
     public function splitOutput($output)
     {
-        return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
+        if (is_array($output)) {
+
+            $array = [];
+            foreach ($output as $line) {
+                $array = preg_split("~$this->delimiter~", $line, -1, PREG_SPLIT_NO_EMPTY);
+            }
+
+        } else {
+
+            return preg_split("~$this->delimiter~", $output, -1, PREG_SPLIT_NO_EMPTY);
+
+        }
+
+        return $array;
+
     }
 
+    /** Default PHP_ARRAY
+     * @param $output
+     * @return array|mixed|null
+     */
     public function outputEncoder($output)
     {
         switch ($this->getOutputRenderType()) {
@@ -503,6 +576,8 @@ class SwissEphemeris
             case 'JSON':
                 $output = $this->encodeJson($output);
                 break;
+            case 'PLAIN':
+                // nothing to do;
             default:
                 return $output;
 
@@ -511,41 +586,40 @@ class SwissEphemeris
         return $output;
     }
 
+    /**
+     * @param $output
+     * @return array|null
+     */
     public function encodePhpArray($output)
     {
-        // is it array
+        $php_array = array();
+        $i = 0;
         if (is_array($output)) {
-
-            $php_array = null;
 
             foreach ($output as $value) {
 
-                // have delimiter ,
-                if ($this->isDelimiter($value)) {
-                    $php_array[] = $this->splitOutput($value);
-
-                    // have no delimiter
-                } else {
-                    $php_array = $output;
-                }
-
+                $php_array[$i] = $this->splitOutput($value);
+                $php_array[$i]['name'] = $this->getName();
+                $i++;
             }
-
-            $output = $php_array;
         }
 
-
-        return $output;
-    }
-
-    public function encodeJson($output)
-    {
-// todo
-        return $output;
+        return $php_array;
     }
 
 
     /**
+     * @param $output
+     * @return false|string
+     */
+    public function encodeJson($output)
+    {
+        return json_encode($output);
+    }
+
+
+    /**
+     * Check if the console response array have delimiter in string.
      * @param $value
      * @return bool
      */
@@ -558,7 +632,12 @@ class SwissEphemeris
         }
     }
 
-    public function getSiderealMethodName($sid = null)
+    /**
+     * Return the real name of the Sideral Methode
+     * @param int $sid
+     * @return string
+     */
+    public function getSiderealMethodName(int $sid = null): string
     {
 
         $sidereal = [
@@ -609,6 +688,7 @@ class SwissEphemeris
     }
 
     /**
+     * Execute the string in the Library Swiss Console and the response in variables
      * @return $this
      * @throws Exception
      */
@@ -616,6 +696,9 @@ class SwissEphemeris
     {
         // More about command line options: https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
         exec($this->query, $output, $status);
+
+        // save status code
+        $this->status = $status;
 
 
         // if debug true dont encode output
@@ -632,17 +715,17 @@ class SwissEphemeris
         } else {
 
             // else set the name of the planet
-            $this->setName($output[0]);
+            $name = $this->splitOutput($output[0]);
+            $this->setName($name[0]);
         }
 
-        // output
+        // save output
         $this->response = $output;
         $this->output = $this->outputEncoder($output);
-        $this->status = $status;
 
         // unknown error query syntax error
         if ($this->status === 127) {
-            throw new SwissEphemerisException('Illegal command!');
+            throw new SwissEphemerisException('Illegal command: unknown error query syntax error!');
         }
 
         return $this;

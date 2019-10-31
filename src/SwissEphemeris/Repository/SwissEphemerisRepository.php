@@ -4,6 +4,8 @@
 namespace App\SwissEphemeris;
 
 
+use Exception;
+
 /**
  * Class SwissEphemerisRepository
  * @package App\SwissEphemeris
@@ -19,7 +21,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return string|array
-     * @throws \Exception
+     * @throws Exception
      *
      * Get the zodiac calendar in Spiritual mode
      */
@@ -41,12 +43,10 @@ class SwissEphemerisRepository extends SwissEphemeris
     }
 
     /**
-     * @param null $date
      * @param string $id
-     * @return |null
-     * @throws \Exception
-     *
-     * Get only data for planet
+     * @param null $date
+     * @return null |null
+     * @throws Exception Get only data for planet
      */
     public function getByLetter($id = '0', $date = null)
     {
@@ -63,7 +63,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return |null
-     * @throws \Exception
+     * @throws Exception
      *
      * Get only data for planet SUN
      */
@@ -82,7 +82,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return null |null
-     * @throws \Exception
+     * @throws Exception
      * Get only data for planet MOON heliocentric
      */
     public function getMoon($date = null)
@@ -100,7 +100,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return null |null
-     * @throws \Exception
+     * @throws Exception
      * Get only data for planet MERCURY heliocentric
      */
     public function getMercury($date = null)
@@ -119,7 +119,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return null |null
-     * @throws \Exception
+     * @throws Exception
      * Get only data for planet VENUS heliocentric
      */
     public function getVenus($date = null)
@@ -138,7 +138,7 @@ class SwissEphemerisRepository extends SwissEphemeris
     /**
      * @param null $date
      * @return null |null
-     * @throws \Exception
+     * @throws Exception
      * Get only data for planet mars heliocentric
      */
     public function getMars($date = null)
@@ -147,6 +147,96 @@ class SwissEphemerisRepository extends SwissEphemeris
         $parameter = [
             'b' => $date,
             'p' => '4',// planet 4 Mars
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws Exception
+     */
+    public function getJupiter($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '5',// planet 5 Jupiter
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws Exception
+     */
+    public function getSaturn($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '6',// planet 6 Saturn
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws Exception
+     */
+    public function getUranus($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '7',// planet 7 Uranus
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws Exception
+     */
+    public function getNeptune($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '8',// planet 8 Neptune
+            'h' => 'el'
+
+        ];
+
+        return $this->query($parameter)->execute()->getOutput();
+    }
+
+    /**
+     * @param null $date
+     * @return null |null
+     * @throws Exception
+     */
+    public function getPluto($date = null)
+    {
+
+        $parameter = [
+            'b' => $date,
+            'p' => '9',// planet 9 Pluto
             'h' => 'el'
 
         ];
