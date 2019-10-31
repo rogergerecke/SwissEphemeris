@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\SwissEphemeris;
+namespace App\SwissEphemeris\Repository;
 
 
+use App\SwissEphemeris\SwissEphemeris;
 use Exception;
 
 /**
