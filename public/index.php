@@ -2,7 +2,7 @@
 
 include_once __DIR__ . '/../vendor/autoload.php';
 
-use App\SwissEphemeris\SwissEphemerisRepository;
+use App\SwissEphemeris\Repository\SwissEphemerisRepository;
 
 // create a new object AND HAVE FUN TO USE IT
 $obj = new SwissEphemerisRepository();
