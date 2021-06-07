@@ -149,6 +149,10 @@ class SwissEphemeris
      */
     public function __construct($lib_phat = null, $debug = FALSE)
     {
+        if(!function_exists('exec')) {
+            die('Shell function from php not enable');
+        }
+
         // use default library phat
         if (is_null($lib_phat) or empty($lib_phat)) {
             $lib_phat = __DIR__ . $this->default_phat;
