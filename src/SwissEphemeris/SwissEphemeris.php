@@ -149,7 +149,7 @@ class SwissEphemeris
      */
     public function __construct($lib_phat = null, $debug = FALSE)
     {
-        if(!function_exists('exec')) {
+        if(!$this->exec_enabled()) {
             die('Shell function from php not enable');
         }
 
@@ -735,5 +735,9 @@ class SwissEphemeris
         return $this;
     }
 
-
+   protected function exec_enabled(): bool
+    {
+        $disabled = explode(',', ini_get('disable_functions'));
+        return !in_array('exec', $disabled);
+    }
 }
