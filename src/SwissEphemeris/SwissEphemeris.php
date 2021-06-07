@@ -40,7 +40,7 @@ class SwissEphemeris
      * Use variable above
      * @var bool
      */
-    protected $geopositon = TRUE;
+    protected $geopositon = true;
     /**
      * Timezone value for Europe/Berlin
      * 2 hours ahead of UTC
@@ -131,7 +131,7 @@ class SwissEphemeris
      * @var bool
      * show the debug header output = FALSE
      */
-    protected $debug_header = FALSE;
+    protected $debug_header = false;
 
 
     /**
@@ -147,15 +147,15 @@ class SwissEphemeris
      * @param bool $debug
      * @throws \App\SwissEphemeris\SwissEphemerisException
      */
-    public function __construct($lib_phat = null, $debug = FALSE)
+    public function __construct($lib_phat = null, $debug = false)
     {
-        if(!$this->exec_enabled()) {
+        if (!$this->exec_enabled()) {
             die('Shell function from php not enable');
         }
 
         // use default library phat
         if (is_null($lib_phat) or empty($lib_phat)) {
-            $lib_phat = __DIR__ . $this->default_phat;
+            $lib_phat = __DIR__.$this->default_phat;
         }
 
         $this->setLibPhat($lib_phat);
@@ -163,7 +163,7 @@ class SwissEphemeris
 
         // debug mode on?
         if ($debug) {
-            $this->setDebugHeader(TRUE);
+            $this->setDebugHeader(true);
         }
 
     }
@@ -185,11 +185,11 @@ class SwissEphemeris
     public function setLibPhat($lib_phat)
     {
 
-        if (is_dir($lib_phat) and is_file($lib_phat . 'swetest')) {
+        if (is_dir($lib_phat) and is_file($lib_phat.'swetest')) {
 
             //console script need phat variable this variable is set only for request and request time!!!!
             // safe_mode_allowed_env_vars must allow by your hoster
-            putenv('PATH=' . $lib_phat);
+            putenv('PATH='.$lib_phat);
             //**************************************************************************
 // todo add a check of the path variable would set but getenv dosnt works corect i dosnt have any idea to a better working resault
             $this->lib_phat = $lib_phat;
@@ -490,22 +490,22 @@ class SwissEphemeris
 
         // if geoposition use true (default Green Witch) TODO dont work colision ? heliocentric
         if ($this->geopositon) {
-            $options[] = '-geopos' . $this->longitude . '.' . $this->latitude;
+            $options[] = '-geopos'.$this->longitude.'.'.$this->latitude;
         }
 
         // compile array to query string
         foreach ($query as $key => $value) {
-            $options[] = is_int($key) ? '-' . $value : '-' . $key . $value;
+            $options[] = is_int($key) ? '-'.$value : '-'.$key.$value;
         }
 
         // set standard output format for response
         if (!array_key_exists('f', $query) or is_null($query['f'])) {
-            $options[] = '-f' . $this->getOutputFormat();
+            $options[] = '-f'.$this->getOutputFormat();
         }
 
         // set standard delimiter
         if (!array_key_exists('g', $query) or is_null($query['g'])) {
-            $options[] = '-g' . $this->getDelimiter();
+            $options[] = '-g'.$this->getDelimiter();
         }
 
 
@@ -645,16 +645,16 @@ class SwissEphemeris
     {
 
         $sidereal = [
-            0 => 'Fagan/Bradley',
-            1 => 'Lahiri',
-            2 => 'De Luce',
-            3 => 'Raman',
-            4 => 'Ushashashi',
-            5 => 'Krishnamurti',
-            6 => 'Djwhal Khul',
-            7 => 'Yukteshwar',
-            8 => 'J.N. Bhasin',
-            9 => 'Babylonian/Kugler 1',
+            0  => 'Fagan/Bradley',
+            1  => 'Lahiri',
+            2  => 'De Luce',
+            3  => 'Raman',
+            4  => 'Ushashashi',
+            5  => 'Krishnamurti',
+            6  => 'Djwhal Khul',
+            7  => 'Yukteshwar',
+            8  => 'J.N. Bhasin',
+            9  => 'Babylonian/Kugler 1',
             10 => 'Babylonian/Kugler 2',
             11 => 'Babylonian/Kugler 3',
             12 => 'Babylonian/Huber',
@@ -735,9 +735,10 @@ class SwissEphemeris
         return $this;
     }
 
-   protected function exec_enabled(): bool
+    protected function exec_enabled(): bool
     {
         $disabled = explode(',', ini_get('disable_functions'));
+
         return !in_array('exec', $disabled);
     }
 }
