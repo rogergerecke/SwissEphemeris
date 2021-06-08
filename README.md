@@ -1,4 +1,4 @@
-Swiss Ephemeris PHP Classes
+Swiss Ephemeris PHP Classes to handle the C-Basic Ephemeris with PHP over shell
 
 **EN**
 
@@ -27,6 +27,11 @@ Info to Swiss Ephemeris
 [Swiss Ephemeris Examples Interface](https://www.astro.com/ftp/swisseph/doc/swephprg.htm)
 
 [Swiss Ephemeris Examples](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
+
+UPDATE 2.0.3
+---
+- To PHP 7.4
+- Remove unused Dockerfile lib's
 
 UPDATE 2.1.0
 ---
