@@ -157,6 +157,10 @@ class SwissEphemeris
             throw new SwissEphemerisException('Shell function from php not enable');
         }
 
+        if (substr(php_uname(), 0, 7) == "Windows"){
+            throw new SwissEphemerisException('Windows not supported yet pleas run this repro under linux or add a solution');
+        }
+
         // use default library phat
         if (is_null($lib_phat) or empty($lib_phat)) {
             $lib_phat = __DIR__.$this->default_phat;
