@@ -7,6 +7,7 @@ use App\SwissEphemeris\SwissEphemerisException as SwissEphemerisException;
 use DateTime;
 use DateTimeZone;
 use Exception;
+use function PHPUnit\Framework\throwException;
 
 /**
  * Class SwissEphemeris
@@ -141,16 +142,19 @@ class SwissEphemeris
     protected $default_phat = '/sweph/';
 
 
+
+
     /**
      * SwissEphemeris constructor.
      * @param null $lib_phat
      * @param bool $debug
      * @throws \App\SwissEphemeris\SwissEphemerisException
      */
-    public function __construct($lib_phat = null, $debug = false)
+
+    public function __construct($lib_phat = null, bool $debug = false)
     {
         if (!$this->exec_enabled()) {
-            die('Shell function from php not enable');
+            throw new SwissEphemerisException('Shell function from php not enable');
         }
 
         // use default library phat
@@ -182,7 +186,7 @@ class SwissEphemeris
      * @return $this
      * @throws SwissEphemerisException
      */
-    public function setLibPhat($lib_phat)
+    public function setLibPhat($lib_phat): SwissEphemeris
     {
 
         if (is_dir($lib_phat) and is_file($lib_phat.'swetest')) {
@@ -191,7 +195,7 @@ class SwissEphemeris
             // safe_mode_allowed_env_vars must allow by your hoster
             putenv('PATH='.$lib_phat);
             //**************************************************************************
-// todo add a check of the path variable would set but getenv dosnt works corect i dosnt have any idea to a better working resault
+// todo add a check of the path variable would set but getenv doesn't works correct i doesn't have any idea to a better working result
             $this->lib_phat = $lib_phat;
 
         } else {
@@ -520,6 +524,7 @@ class SwissEphemeris
 
 
     /**
+     * This function build the query string
      * @param $query
      * @return $this
      * @throws Exception
@@ -692,7 +697,7 @@ class SwissEphemeris
     }
 
     /**
-     * Execute the string in the Library Swiss Console and the response in variables
+     * Execute the string: Fired to the shell and query the astro c-basic
      * @return $this
      * @throws Exception
      */
@@ -702,8 +707,8 @@ class SwissEphemeris
         exec($this->query, $output, $status);
 
         //handle empty response from shell exec
-        if (!is_array($output) && empty($output)){
-            die('No shell response');
+        if (!is_array($output) or empty($output)){
+            throw new SwissEphemerisException('You have a empty shell response have you put valid data to the execute command');
         }
 
         // save status code
@@ -740,6 +745,9 @@ class SwissEphemeris
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     protected function exec_enabled(): bool
     {
         $disabled = explode(',', ini_get('disable_functions'));
