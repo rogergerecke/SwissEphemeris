@@ -701,6 +701,11 @@ class SwissEphemeris
         // More about command line options: https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
         exec($this->query, $output, $status);
 
+        //handle empty response from shell exec
+        if (!is_array($output) && empty($output)){
+            die('No shell response');
+        }
+
         // save status code
         $this->status = $status;
 
