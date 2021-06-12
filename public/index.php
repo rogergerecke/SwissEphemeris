@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . '/../vendor/autoload.php';
+include_once __DIR__.'/../vendor/autoload.php';
 
 use App\SwissEphemeris\Repository\SwissEphemerisRepository;
 
@@ -19,16 +19,18 @@ $obj = new SwissEphemerisRepository();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Test the Swiss Ephemeris PHP class</title>
+    <title>Examples of the PHP Ephemeris class</title>
 </head>
 <body>
 <div class="container-fluid">
+    <h1>Examples of the PHP Ephemeris class</h1>
+    <p>How whe can use this class</p>
 
-
-    <div class="row bg-info">
+<!-- Sodijac -->
+    <div class="row bg-info p-5">
         <div class="col-md-6">
-            <h1 class="h6">Example Zodiac Sideral use Repository class --------></h1>
-<pre>
+            <h2>Example: Zodiac Sidereal</h2>
+            <pre>
 <code>
  // create a new object AND HAVE FUN TO USE IT
 $obj = new SwissEphemerisRepository();
@@ -46,11 +48,36 @@ print_r($obj->getZodiacSideral());
     </div>
 
     <hr>
+    <!-- Sodijac #END-->
+
+    <!-- Sun -->
+    <div class="row bg-warning p-5">
+        <div class="col-md-6">
+            <h2>Example: SUN <small>Use the Repository class</small></h2>
+            <pre>
+<code>
+ // create a new object AND HAVE FUN TO USE IT
+$obj = new SwissEphemerisRepository();
+print_r($obj->getSun());
+ </code>
+ </pre>
+        </div>
+
+        <div class="col-md-6">
+            <p>output:</p>
+            <div class="alert alert-secondary" role="alert">
+                <?php print_r($obj->getSun()); ?>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <!-- Sun #END -->
 
     <div class="row">
         <div class="col-md-6">
             <h2 class="h6">Example use dynamic query -------></h2>
- <pre>
+            <pre>
 <code>
 swetest -p2 -b1.12.1900 -n15 -s2
 ephemeris of Mercury (-p2) starting on 1 Dec 1900,
@@ -66,20 +93,20 @@ ephemeris of Mercury (-p2) starting on 1 Dec 1900,
      print_r($obj->getOutput())
  </code>
 </pre>
-</div>
+        </div>
         <div class="col-md-6">
             <p>output:</p>
             <div class="alert alert-secondary" role="alert">
-            <?php
-            $query = [
-                'p' => 2,
-                'b' => '1.12.1900',
-                'n' => 15,
-                's' => 2
-            ];
-            $obj->query($query)->execute();
-            print_r($obj->getOutput())
-            ?>
+                <?php
+                $query = [
+                    'p' => 2,
+                    'b' => '1.12.1900',
+                    'n' => 15,
+                    's' => 2,
+                ];
+                $obj->query($query)->execute();
+                print_r($obj->getOutput())
+                ?>
 
             </div>
         </div>
@@ -92,7 +119,7 @@ ephemeris of Mercury (-p2) starting on 1 Dec 1900,
             <div class="alert alert-success" role="alert">
                 Tip: I think extend the repository class for your needs is the best patrice
             </div>
-    <pre>
+            <pre>
         <code>
 // output venus data from today
 print_r($obj->getVenus()
@@ -102,7 +129,7 @@ print_r($obj->getVenus()
         <div class="col-md-6">
             <p>output:</p>
             <div class="alert alert-danger" role="alert">
-            <?php print_r($obj->getVenus())?>
+                <?php print_r($obj->getVenus()) ?>
             </div>
         </div>
     </div>

@@ -142,8 +142,6 @@ class SwissEphemeris
     protected $default_phat = '/sweph/';
 
 
-
-
     /**
      * SwissEphemeris constructor.
      * @param null $lib_phat
@@ -157,13 +155,21 @@ class SwissEphemeris
             throw new SwissEphemerisException('Shell function from php not enable');
         }
 
-        if (substr(php_uname(), 0, 7) == "Windows"){
-            throw new SwissEphemerisException('Windows not supported yet pleas run this repro under linux or add a solution');
+        if (substr(php_uname(), 0, 7) == "Windows") {
+            $isWindows = true;
+            /*            throw new SwissEphemerisException(
+                            'Windows not supported yet pleas run this repro under linux or add a solution'
+                        );*/
         }
 
         // use default library phat
         if (is_null($lib_phat) or empty($lib_phat)) {
             $lib_phat = __DIR__.$this->default_phat;
+        }
+
+        // add slashes
+        if ($isWindows) {
+            $lib_phat = str_replace(['\\', '/'], '\\\\', $lib_phat);
         }
 
         $this->setLibPhat($lib_phat);
@@ -711,8 +717,10 @@ class SwissEphemeris
         exec($this->query, $output, $status);
 
         //handle empty response from shell exec
-        if (!is_array($output) or empty($output)){
-            throw new SwissEphemerisException('You have a empty shell response have you put valid data to the execute command');
+        if (!is_array($output) or empty($output)) {
+            throw new SwissEphemerisException(
+                'You have a empty shell response have you put valid data to the execute command'
+            );
         }
 
         // save status code
