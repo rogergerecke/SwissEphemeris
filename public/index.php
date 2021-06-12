@@ -26,7 +26,7 @@ $obj = new SwissEphemerisRepository();
     <h1>Examples of the PHP Ephemeris class</h1>
     <p>How whe can use this class</p>
 
-<!-- Sodijac -->
+<!-- Zodiac -->
     <div class="row bg-info p-5">
         <div class="col-md-6">
             <h2>Example: Zodiac Sidereal</h2>
@@ -42,7 +42,10 @@ print_r($obj->getZodiacSideral());
         <div class="col-md-6">
             <p>output:</p>
             <div class="alert alert-secondary" role="alert">
-                <?php print_r($obj->getZodiacSideral()); ?>
+                <?php try {
+                    print_r($obj->getZodiacSideral());
+                } catch (Exception $e) {
+                } ?>
             </div>
         </div>
     </div>
@@ -66,7 +69,10 @@ print_r($obj->getSun());
         <div class="col-md-6">
             <p>output:</p>
             <div class="alert alert-secondary" role="alert">
-                <?php print_r($obj->getSun()); ?>
+                <?php try {
+                    print_r($obj->getSun());
+                } catch (Exception $e) {
+                } ?>
             </div>
         </div>
     </div>
@@ -104,7 +110,10 @@ ephemeris of Mercury (-p2) starting on 1 Dec 1900,
                     'n' => 15,
                     's' => 2,
                 ];
-                $obj->query($query)->execute();
+                try {
+                    $obj->query($query)->execute();
+                } catch (Exception $e) {
+                }
                 print_r($obj->getOutput())
                 ?>
 
@@ -129,7 +138,10 @@ print_r($obj->getVenus()
         <div class="col-md-6">
             <p>output:</p>
             <div class="alert alert-danger" role="alert">
-                <?php print_r($obj->getVenus()) ?>
+                <?php try {
+                    print_r($obj->getVenus());
+                } catch (Exception $e) {
+                } ?>
             </div>
         </div>
     </div>
