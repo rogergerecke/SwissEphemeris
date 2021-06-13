@@ -213,6 +213,9 @@ class SwissEphemeris
 
 
     /**
+     * Set the library path for the query moment in the $ENV is the path
+     * false the function return nothing.
+     *
      * @param $lib_phat
      * @return $this
      * @throws SwissEphemerisException
@@ -231,7 +234,6 @@ class SwissEphemeris
             // safe_mode_allowed_env_vars must allow by your hoster
             putenv('PATH='.$lib_phat);
             //**************************************************************************
-// todo add a check of the path variable would set but getenv doesn't works correct i doesn't have any idea to a better working result
             $this->lib_phat = $lib_phat;
 
         } else {
@@ -528,7 +530,7 @@ class SwissEphemeris
             $query['b'] = $this->getDate();
         }
 
-        // if geoposition use true (default Green Witch) TODO dont work colision ? heliocentric
+        // if geo-position use true (default Green Witch) TODO dont work collision ? heliocentric
         if ($this->geopositon) {
             $options[] = '-geopos'.$this->longitude.'.'.$this->latitude;
         }
@@ -575,7 +577,7 @@ class SwissEphemeris
      * @return $this
      * @throws Exception
      */
-    public function query($query)
+    public function query($query): SwissEphemeris
     {
 
         // run query with array of option compiled to a string for the console
@@ -645,7 +647,7 @@ class SwissEphemeris
      * @param $output
      * @return array|null
      */
-    public function encodePhpArray($output)
+    public function encodePhpArray($output): ?array
     {
         $php_array = array();
         $i = 0;
@@ -678,7 +680,7 @@ class SwissEphemeris
      * @param $value
      * @return bool
      */
-    public function isDelimiter($value)
+    public function isDelimiter($value): bool
     {
         if (preg_match("~$this->delimiter~", $value)) {
             return true;
@@ -688,8 +690,8 @@ class SwissEphemeris
     }
 
     /**
-     * Return the real name of the Sideral Methode
-     * @param int $sid
+     * Return the real name of the Sidereal Methode
+     * @param int|null $sid
      * @return string
      */
     public function getSiderealMethodName(int $sid = null): string
@@ -744,10 +746,10 @@ class SwissEphemeris
 
     /**
      * Execute the string: Fired to the shell and query the astro c-basic
-     * @return $this
-     * @throws Exception
+     * @return SwissEphemeris
+     * @throws \App\SwissEphemeris\SwissEphemerisException
      */
-    public function execute()
+    public function execute(): SwissEphemeris
     {
         // More about command line options: https://www.astro.com/cgi/swetest.cgi?arg=-h&p=0
         exec($this->query, $output, $status);
@@ -788,7 +790,13 @@ class SwissEphemeris
         // unknown error query syntax error
         if ($this->status === 127) {
             throw new SwissEphemerisException('Illegal command: unknown error query syntax error!');
+
         }
+
+        if (empty($this->status) and $this->status != 0) {
+            throw new SwissEphemerisException('Unknown: Console return nothing? path failure!');
+        }
+
 
         return $this;
     }

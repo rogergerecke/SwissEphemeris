@@ -56,7 +56,7 @@ UPDATE 2.1.3
 ---
 - Update to new Time Range 30000 years
 - Update to wonderful Swiss Ephemeris 2.10.01
-- To PHP 7.4
+- To PHP 7.4.18
 - Remove unused Dockerfile lib's
 
 UPDATE 2.1.0
@@ -67,11 +67,11 @@ UPDATE 2.1.0
 
 Help and Question
 ---
-Do you want more flexibility or have you found a mistake? Open a issus
+Do you want more flexibility or have you found a mistake? Open an issues
 
-[Open Issus](https://github.com/rogergerecke/SwissEphemeris/issues)
+[Open Issues](https://github.com/rogergerecke/SwissEphemeris/issues)
 
-Please open a Issus if you have a good idea
+Please open a Issues if you have a good idea
 
 Install via Composer Dependency Manager
 ---
@@ -81,7 +81,7 @@ Add to your composer.json and run composer update
 
 "repositories": [
     {
-      "type": "git",
+      "type": "github",
       "name": "rogergerecke/swiss-ephemeris",
       "url": "https://github.com/rogergerecke/SwissEphemeris.git"
     }
@@ -105,3 +105,4 @@ and run the both commands.
 
 TEST
 ---
+in /public/index.php
