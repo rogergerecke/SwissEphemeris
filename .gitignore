@@ -4,6 +4,7 @@
 #project
 **/logs/
 vendor/
+**/DE441.eph
 
 # User-specific stuff
 .idea/**/workspace.xml

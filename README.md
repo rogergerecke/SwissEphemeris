@@ -28,8 +28,34 @@ Info to Swiss Ephemeris
 
 [Swiss Ephemeris Examples](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
 
-UPDATE 2.0.3
+[Other Ephemeris Data](https://ssd.jpl.nasa.gov/?planet_eph_export)
+
+[Swiss Ephemeris mailing list](https://groups.io/g/swisseph)
+
+## Include the de441
+
+---------
+
+##### Download 
+
+>Download files with time range you need from ftp:astro.ch or un-compiled from ssd.jpl.nasa.gov as ascii compiled under Linux with https://github.com/Bill-Gray/jpl_eph
+
+DE441 : Created June 2020; compared to DE431, about 7 years of new data have
+been added.
+Referred to the International Celestial Reference Frame version 3.0.
+Covers JED -3100015.5, (-13200 AUG 15) to JED 8000016.50, (17191 MAR 15).
+
+        DE440 and DE441 are documented in the following document:
+        https://doi.org/10.3847/1538-3881/abd414
+        (NOTE: this paper has been accepted for publication in December, 2020;
+         this link will become available sometime in January)
+
+-------------
+
+UPDATE 2.1.3
 ---
+- Update to new Time Range 30000 years
+- Update to wonderful Swiss Ephemeris 2.10.01
 - To PHP 7.4
 - Remove unused Dockerfile lib's
 
@@ -65,6 +91,17 @@ Add to your composer.json and run composer update
   }
   
 ```
+Docker Help
+---
+
+
+Update the php version in an existing docker-container change the PHP version in the Dockerfile
+and run the both commands.
+
+````
+ docker-compose build --no-cache --pull YOUR_CONTAINER_NAME
+ docker-compose up -d
+````
 
 TEST
 ---

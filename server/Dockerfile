@@ -1,4 +1,4 @@
-FROM php:7.4.0-apache-buster
+FROM php:7.4.18-apache-buster
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -7,6 +7,9 @@ RUN apt-get upgrade -y
 
 # Install useful tools
 RUN apt-get -y install --fix-broken
+
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install important libraries
 RUN apt-get -y install --fix-missing build-essential curl libcurl4 libcurl4-openssl-dev zip

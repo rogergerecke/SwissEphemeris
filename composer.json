@@ -19,9 +19,17 @@
       "App\\Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "github",
+      "name": "Bill-Gray/jpl_eph",
+      "url": "https://github.com/Bill-Gray/jpl_eph.git"
+    }
+  ],
   "require-dev": {
     "twitter/bootstrap": "v4.3.1",
-    "phpunit/phpunit": "8.1.5"
+    "phpunit/phpunit": "8.1.5",
+    "bill-gray/jpl_eph": "dev-master"
   },
   "require": {
     "ext-json": "*"

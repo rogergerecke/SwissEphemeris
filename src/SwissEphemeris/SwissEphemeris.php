@@ -134,6 +134,9 @@ class SwissEphemeris
      */
     protected $debug_header = false;
 
+    protected $isWindows = false;
+
+    protected $default_eph_file = 'DE441.eph';
 
     /**
      * @var string
@@ -145,35 +148,36 @@ class SwissEphemeris
     /**
      * SwissEphemeris constructor.
      * @param null $lib_phat
+     * @param null $eph_file
      * @param bool $debug
      * @throws \App\SwissEphemeris\SwissEphemerisException
      */
 
-    public function __construct($lib_phat = null, bool $debug = false)
+    public function __construct($lib_phat = null, $eph_file = null, bool $debug = false)
     {
-        if (!$this->exec_enabled()) {
-            throw new SwissEphemerisException('Shell function from php not enable');
+        if (!$this->check_system_requirements()) {
+            throw new SwissEphemerisException('System misconfiguration');
         }
 
         if (substr(php_uname(), 0, 7) == "Windows") {
-            $isWindows = true;
-            /*            throw new SwissEphemerisException(
-                            'Windows not supported yet pleas run this repro under linux or add a solution'
-                        );*/
+            $this->isWindows = true;
+            throw new SwissEphemerisException(
+                'Windows not supported yet pleas run this repro under linux or add a solution'
+            );
         }
 
         // use default library phat
-        if (is_null($lib_phat) or empty($lib_phat)) {
-            $lib_phat = __DIR__.$this->default_phat;
+        if (!is_null($lib_phat)) {
+            $this->setLibPhat($lib_phat);
+        }
+        if (is_null($lib_phat)) {
+            $this->setLibPhat(__DIR__.$this->default_phat);
         }
 
-        // add slashes
-        if ($isWindows) {
-            $lib_phat = str_replace(['\\', '/'], '\\\\', $lib_phat);
+        // -ejpl
+        if (!is_null($eph_file)) {
+            $this->setDefaultEphFile($eph_file);
         }
-
-        $this->setLibPhat($lib_phat);
-
 
         // debug mode on?
         if ($debug) {
@@ -181,6 +185,23 @@ class SwissEphemeris
         }
 
     }
+
+    /**
+     * @return string
+     */
+    public function getDefaultEphFile(): string
+    {
+        return $this->default_eph_file;
+    }
+
+    /**
+     * @param mixed|string $default_eph_file
+     */
+    public function setDefaultEphFile($default_eph_file): void
+    {
+        $this->default_eph_file = $default_eph_file;
+    }
+
 
     /**
      * @return mixed
@@ -198,6 +219,11 @@ class SwissEphemeris
      */
     public function setLibPhat($lib_phat): SwissEphemeris
     {
+
+        if ($this->isWindows) {
+            // add slashes
+            $lib_phat = str_replace(['\\', '/'], '\\\\', $lib_phat);
+        }
 
         if (is_dir($lib_phat) and is_file($lib_phat.'swetest')) {
 
@@ -492,7 +518,7 @@ class SwissEphemeris
      * @return string
      * @throws Exception
      */
-    public function compiler($query)
+    public function compiler($query): string
     {
         $options = [];
 
@@ -505,6 +531,16 @@ class SwissEphemeris
         // if geoposition use true (default Green Witch) TODO dont work colision ? heliocentric
         if ($this->geopositon) {
             $options[] = '-geopos'.$this->longitude.'.'.$this->latitude;
+        }
+
+        // library path
+        if ($this->lib_phat) {
+            $options[] = '-edir'.$this->lib_phat;
+        }
+
+        // add the eph file
+        if ($this->default_eph_file) {
+            $options[] = '-ejpl'.$this->default_eph_file;
         }
 
         // compile array to query string
@@ -553,7 +589,7 @@ class SwissEphemeris
         }
 
         // save the full query string for console ready to ->execute() the console
-        $this->query = "swetest -edir$this->lib_phat $query";
+        $this->query = "swetest $query";
 
         return $this;
     }
@@ -757,6 +793,19 @@ class SwissEphemeris
         return $this;
     }
 
+    protected function check_system_requirements(): bool
+    {
+        if (!$this->exec_enabled()) {
+            return false;
+        }
+
+        if (!$this->putenv_enabled()) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @return bool
      */
@@ -765,5 +814,16 @@ class SwissEphemeris
         $disabled = explode(',', ini_get('disable_functions'));
 
         return !in_array('exec', $disabled);
+    }
+
+
+    /**
+     * @return bool
+     */
+    protected function putenv_enabled(): bool{
+
+        $disabled = explode(',', ini_get('disable_functions'));
+
+        return !in_array('putenv', $disabled);
     }
 }

@@ -20,6 +20,20 @@ class SwissEphemerisRepository extends SwissEphemeris
 
 
     /**
+     * Get the software version
+     * @throws Exception
+     */
+    public function getVersion(){
+        $parameter = [
+            'h' => '',
+        ];
+
+        $output = $this->query($parameter)->execute()->getOutput();
+        $version = $output[8][0];
+        return $version;
+    }
+
+    /**
      * @param null $date
      * @return string|array
      * @throws Exception

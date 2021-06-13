@@ -23,10 +23,14 @@ $obj = new SwissEphemerisRepository();
 </head>
 <body>
 <div class="container-fluid">
-    <h1>Examples of the PHP Ephemeris class</h1>
+    <h1>Examples of the PHP Ephemeris class <?php try {
+            print_r($obj->getVersion());
+        } catch (Exception $e) {
+        } ?></h1>
+
     <p>How whe can use this class</p>
 
-<!-- Zodiac -->
+    <!-- Zodiac -->
     <div class="row bg-info p-5">
         <div class="col-md-6">
             <h2>Example: Zodiac Sidereal</h2>
