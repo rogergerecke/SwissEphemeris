@@ -3,7 +3,7 @@ Swiss Ephemeris PHP Classes to handle the C-Basic Ephemeris with PHP over shell
 **EN**
 
 Getting Planets Position using PHP & AstroDienst Swiss Ephemeris library.  Use the Repository class to extend it for your need.
->**Tip:** Extend the repository class
+>**Tip:** Extend the SwissEphemerisRepository class
 
 Examples of use in index.php or SwissEphemerisRepository.php
 
@@ -12,9 +12,12 @@ Examples of use in index.php or SwissEphemerisRepository.php
 Zur berechnung verschidenen Astrologischer Objekt-Position Basis zur berechnung sind die Daten von
 [http://www.astro.com/ftp/swisseph/ephe/ ](http://www.astro.com/ftp/swisseph/ephe/ )
 
->**Tip:** Erweitere die Repository class
+>**Tip:** Erweitere die SwissEphemerisRepository class
 
 Für Beispiele schau dir die index.php an oder die SwissEphemerisRepository.php
+
+>**INFO:** Zur Anwendung auf Linux-Systemen oder in dem mitgelieferten Docker-Container bei 
+> Windows gibt es Probleme da die befehle an die cmd.exe geschickt werden.
 
 ---
 
