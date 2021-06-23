@@ -66,6 +66,8 @@ class SwissEphemeris
      */
     protected $time;
 
+    protected $terminal_tool = '';
+
     /**
      * @var
      */
@@ -260,6 +262,36 @@ class SwissEphemeris
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTerminalTool(): string
+    {
+        $shell = [
+            'sh'=>'Bourne shell',
+            'csh'=>'C shell',
+            'tcsh'=>'TC shell',
+            'ksh'=>'Korn shell',
+            'bash'=>'Bourne Again shell',
+        ];
+
+        exec('echo $0',$out);
+
+        if(!is_null($out[0])){
+            $this->setTerminalTool($shell[$out[0]]);
+        }
+
+        return $this->terminal_tool;
+    }
+
+    /**
+     * @param string $terminal_tool
+     */
+    public function setTerminalTool(string $terminal_tool): void
+    {
+        $this->terminal_tool = $terminal_tool;
     }
 
 
@@ -803,6 +835,10 @@ class SwissEphemeris
 
     protected function check_system_requirements(): bool
     {
+        if(empty($this->getTerminalTool())){
+            return false;
+        }
+
         if (!$this->exec_enabled()) {
             return false;
         }
@@ -828,7 +864,8 @@ class SwissEphemeris
     /**
      * @return bool
      */
-    protected function putenv_enabled(): bool{
+    protected function putenv_enabled(): bool
+    {
 
         $disabled = explode(',', ini_get('disable_functions'));
 

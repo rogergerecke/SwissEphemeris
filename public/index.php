@@ -23,7 +23,11 @@ $obj = new SwissEphemerisRepository();
 </head>
 <body>
 <div class="container-fluid">
-    <h1>Examples of the PHP Ephemeris class <?php try {
+
+    <div class="row mt-1 col">Genutzte Terminal Programm: <?php echo $obj->getTerminalTool()?></div>
+
+    <h1>Examples of the PHP Ephemeris class <?php
+        try {
             print_r($obj->getVersion());
         } catch (Exception $e) {
         } ?></h1>
