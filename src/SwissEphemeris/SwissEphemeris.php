@@ -158,7 +158,7 @@ class SwissEphemeris
     public function __construct($lib_phat = null, $eph_file = null, bool $debug = false)
     {
         if (!$this->check_system_requirements()) {
-            throw new SwissEphemerisException('System misconfiguration');
+            throw new SwissEphemerisException('System misconfiguration! Check system requirement fails! Read README.md');
         }
 
         if (substr(php_uname(), 0, 7) == "Windows") {
@@ -270,16 +270,16 @@ class SwissEphemeris
     public function getTerminalTool(): string
     {
         $shell = [
-            'sh'=>'Bourne shell',
-            'csh'=>'C shell',
-            'tcsh'=>'TC shell',
-            'ksh'=>'Korn shell',
-            'bash'=>'Bourne Again shell',
+            'sh'   => 'Bourne shell',
+            'csh'  => 'C shell',
+            'tcsh' => 'TC shell',
+            'ksh'  => 'Korn shell',
+            'bash' => 'Bourne Again shell',
         ];
 
-        exec('echo $0',$out);
+        exec('echo $0', $out);
 
-        if(!is_null($out[0])){
+        if (!is_null($out[0])) {
             $this->setTerminalTool($shell[$out[0]]);
         }
 
@@ -835,17 +835,27 @@ class SwissEphemeris
 
     protected function check_system_requirements(): bool
     {
-        if(empty($this->getTerminalTool())){
+
+        // is a shell terminal installed on server?
+        if (empty($this->getTerminalTool())) {
             return false;
         }
 
+        // have the server the exec function enabled?
         if (!$this->exec_enabled()) {
             return false;
         }
 
+        // have the server the put ENV function enabled?
         if (!$this->putenv_enabled()) {
             return false;
         }
+
+        // can the terminal exec the files?
+        if (empty($this->checkFilePermission())) {
+            return false;
+        }
+
 
         return true;
     }
@@ -870,5 +880,24 @@ class SwissEphemeris
         $disabled = explode(',', ini_get('disable_functions'));
 
         return !in_array('putenv', $disabled);
+    }
+
+    private function checkFilePermission()
+    {
+        $command = 'FILE="./sweph/swetest"
+
+if ! [[ $(stat -c "%A" $FILE) =~ "r" ]]; then
+  echo "Hello"
+fi
+
+exit 0';
+
+        exec($command,$out);
+
+        print_r($out);
+
+        if (!is_null($out)){
+            return false;
+        }
     }
 }
