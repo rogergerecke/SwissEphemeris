@@ -7,7 +7,6 @@ use App\SwissEphemeris\SwissEphemerisException as SwissEphemerisException;
 use DateTime;
 use DateTimeZone;
 use Exception;
-use function PHPUnit\Framework\throwException;
 
 /**
  * Class SwissEphemeris
@@ -384,7 +383,7 @@ class SwissEphemeris
 
     /**
      * @param $date
-     * @throws Exception
+     * @throws SwissEphemerisException|Exception
      */
     public function setDate($date): void
     {
@@ -540,7 +539,7 @@ class SwissEphemeris
      *
      * @param $query
      * @return string
-     * @throws Exception
+     * @throws \App\SwissEphemeris\SwissEphemerisException
      */
     public function compiler($query): string
     {
@@ -597,7 +596,7 @@ class SwissEphemeris
      * This function build the query string
      * @param $query
      * @return $this
-     * @throws Exception
+     * @throws \App\SwissEphemeris\SwissEphemerisException
      */
     public function query($query): SwissEphemeris
     {
