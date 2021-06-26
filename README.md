@@ -101,6 +101,14 @@ Covers JED -3100015.5, (-13200 AUG 15) to JED 8000016.50, (17191 MAR 15).
          this link will become available sometime in January)
 
 -------------
+Changelog:
+---
+
+UPDATE 2.1.4
+---
+- Add Windows 10 support (thanks for Iusses @HSBSINGH)
+- Add demo files to /demo folder
+- Add requirement view in index.php
 
 UPDATE 2.1.3
 ---
