@@ -33,5 +33,10 @@
   },
   "require": {
     "ext-json": "*"
+  },
+  "config": {
+  "platform": {
+    "php": "7.4"
   }
+}
 }

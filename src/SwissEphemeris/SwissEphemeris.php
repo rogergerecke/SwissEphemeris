@@ -136,15 +136,15 @@ class SwissEphemeris
      */
     protected $debug_header = false;
 
-    protected $isWindows = false;
+    protected bool $isWindows = false;
 
-    protected $default_eph_file = 'DE441.eph';
+    protected string $default_eph_file = 'DE441.eph';
 
     /**
      * @var string
      * phat to the swiss lib you cant set the phat to other swiss lib over constructor
      */
-    protected $default_phat = '/sweph/';
+    protected string $default_phat = '/sweph/';
 
 
     /**
@@ -157,19 +157,6 @@ class SwissEphemeris
 
     public function __construct($lib_phat = null, $eph_file = null, bool $debug = false)
     {
-        if (!$this->check_system_requirements()) {
-            throw new SwissEphemerisException(
-                'System misconfiguration! Check system requirement fails! Read README.md'
-            );
-        }
-
-        if (substr(php_uname(), 0, 7) == "Windows") {
-            $this->isWindows = true;
-            /*  throw new SwissEphemerisException(
-                  'Windows not supported yet pleas run this repro under linux or add a solution'
-              );*/
-        }
-
         // use default library phat
         if (!is_null($lib_phat)) {
             $this->setLibPhat($lib_phat);
@@ -190,6 +177,27 @@ class SwissEphemeris
         }
 
     }
+
+    /**
+     * @return bool
+     */
+    public function isWindows(): bool
+    {
+        return $this->isWindows;
+    }
+
+    /**
+     * @param bool $isWindows
+     * @return SwissEphemeris
+     */
+    public function setIsWindows(bool $isWindows): SwissEphemeris
+    {
+        $this->isWindows = $isWindows;
+
+        return $this;
+    }
+
+
 
     /**
      * @return string
@@ -267,30 +275,7 @@ class SwissEphemeris
         $this->name = $name;
     }
 
-    /**
-     * Get the name off the used terminal
-     * how we send the command.
-     * @return string
-     */
-    public function getTerminalTool(): string
-    {
-        $shell = [
-            'sh'   => 'Bourne shell',
-            'csh'  => 'C shell',
-            'tcsh' => 'TC shell',
-            'ksh'  => 'Korn shell',
-            'bash' => 'Bourne Again shell',
-            '$0'   => 'Windows CMD.exe',
-        ];
 
-        exec('echo $0', $out);
-
-        if (!is_null($out[0])) {
-            $this->setTerminalTool($shell[$out[0]]);
-        }
-
-        return $this->terminal_tool;
-    }
 
     /**
      * Setter for terminal name
@@ -844,73 +829,5 @@ class SwissEphemeris
 
 
         return $this;
-    }
-
-    protected function check_system_requirements(): bool
-    {
-
-        // is a shell terminal installed on server?
-        if (empty($this->getTerminalTool())) {
-            return false;
-        }
-
-        // have the server the exec function enabled?
-        if (!$this->exec_enabled()) {
-            return false;
-        }
-
-        // have the server the put ENV function enabled?
-        if (!$this->putenv_enabled()) {
-            return false;
-        }
-
-        // can the terminal exec the files?
-        if (empty($this->checkFilePermission())) {
-            return false;
-        }
-
-
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function exec_enabled(): bool
-    {
-        $disabled = explode(',', ini_get('disable_functions'));
-
-        return !in_array('exec', $disabled);
-    }
-
-
-    /**
-     * @return bool
-     */
-    protected function putenv_enabled(): bool
-    {
-
-        $disabled = explode(',', ini_get('disable_functions'));
-
-        return !in_array('putenv', $disabled);
-    }
-
-    private function checkFilePermission()
-    {
-        $command = 'FILE="./sweph/swetest"
-
-if ! [[ $(stat -c "%A" $FILE) =~ "r" ]]; then
-  echo "Hello"
-fi
-
-exit 0';
-
-        exec($command, $out);
-
-        print_r($out);
-
-        if (!is_null($out)) {
-            return false;
-        }
     }
 }

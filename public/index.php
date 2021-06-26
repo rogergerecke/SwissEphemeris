@@ -3,9 +3,12 @@
 include_once __DIR__.'/../vendor/autoload.php';
 
 use App\SwissEphemeris\Repository\SwissEphemerisRepository;
+use App\SwissEphemeris\SystemCheck;
 
 // create a new object AND HAVE FUN TO USE IT
+$system = new SystemCheck();
 $obj = new SwissEphemerisRepository();
+$obj = $obj->setIsWindows(true);
 
 ?>
 <!doctype html>
@@ -24,74 +27,125 @@ $obj = new SwissEphemerisRepository();
 <body>
 <div class="container-fluid">
 
-    <div class="row mt-1 col">Genutzte Terminal Programm: <?php echo $obj->getTerminalTool()?></div>
-
-    <h1>Examples of the PHP Ephemeris class <?php
-        try {
-            print_r($obj->getVersion());
-        } catch (Exception $e) {
-        } ?></h1>
-
-    <p>How whe can use this class</p>
-
-    <!-- Zodiac -->
-    <div class="row bg-info p-5">
+    <!-- System Info Table -->
+    <h1>Check system requirement</h1>
+    <div class="row">
         <div class="col-md-6">
-            <h2>Example: Zodiac Sidereal</h2>
-            <pre>
+            <table class="table table-stripped">
+                <thead>
+                <tr>
+                    <th>Info</th>
+                    <th>Used</th>
+                    <th>ok</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="row">System</td>
+                    <td><?php echo $system->getSystemInfo()?></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td scope="row">PHP-Version</td>
+                    <td><?php echo $system->getPHP_version()?></td>
+                    <td><?php if($system->ifPHP_versionOk()):?>OK<?php else:?>Not OK<?php endif;?></td>
+                </tr>
+                <tr>
+                    <td scope="row">PHP</td>
+                    <td>exec() function</td>
+                    <td><?php if($system->is_exec_enabled()):?>OK<?php else:?>Not OK<?php endif;?></td>
+                </tr>
+                <tr>
+                    <td scope="row">PHP</td>
+                    <td>putenv() function</td>
+                    <td><?php if($system->is_putenv_enabled()):?>OK<?php else:?>Not OK<?php endif;?></td>
+                </tr>
+                <tr>
+                    <td scope="row">Rights</td>
+                    <td>file permission /sweph</td>
+                    <td><?php if($system->ifFilePermission()):?>OK<?php else:?>Not OK<?php endif;?></td>
+                </tr>
+                <tr>
+                    <td scope="row">Terminal-Version</td>
+                    <td><?php echo $system->getTerminalInfo()?></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- System Info Table #END -->
+
+    <hr>
+    <!-- Examples -->
+   <div class="row">
+
+       <h1>Examples of the PHP Ephemeris class <?php
+           try {
+               print_r($obj->getVersion());
+           } catch (Exception $e) {
+           } ?></h1>
+
+       <p>How whe can use this class</p>
+
+       <!-- Zodiac -->
+       <div class="row bg-info p-5">
+           <div class="col-md-6">
+               <h2>Example: Zodiac Sidereal</h2>
+               <pre>
 <code>
  // create a new object AND HAVE FUN TO USE IT
 $obj = new SwissEphemerisRepository();
 print_r($obj->getZodiacSideral());
  </code>
  </pre>
-        </div>
+           </div>
 
-        <div class="col-md-6">
-            <p>output:</p>
-            <div class="alert alert-secondary" role="alert">
-                <?php try {
-                    print_r($obj->getZodiacSideral());
-                } catch (Exception $e) {
-                } ?>
-            </div>
-        </div>
-    </div>
+           <div class="col-md-6">
+               <p>output:</p>
+               <div class="alert alert-secondary" role="alert">
+                   <?php try {
+                       print_r($obj->getZodiacSideral());
+                   } catch (Exception $e) {
+                   } ?>
+               </div>
+           </div>
+       </div>
 
-    <hr>
-    <!-- Sodijac #END-->
+       <hr>
+       <!-- Sodijac #END-->
 
-    <!-- Sun -->
-    <div class="row bg-warning p-5">
-        <div class="col-md-6">
-            <h2>Example: SUN <small>Use the Repository class</small></h2>
-            <pre>
+       <!-- Sun -->
+       <div class="row bg-warning p-5">
+           <div class="col-md-6">
+               <h2>Example: SUN <small>Use the Repository class</small></h2>
+               <pre>
 <code>
  // create a new object AND HAVE FUN TO USE IT
 $obj = new SwissEphemerisRepository();
 print_r($obj->getSun());
  </code>
  </pre>
-        </div>
+           </div>
 
-        <div class="col-md-6">
-            <p>output:</p>
-            <div class="alert alert-secondary" role="alert">
-                <?php try {
-                    print_r($obj->getSun());
-                } catch (Exception $e) {
-                } ?>
-            </div>
-        </div>
-    </div>
+           <div class="col-md-6">
+               <p>output:</p>
+               <div class="alert alert-secondary" role="alert">
+                   <?php try {
+                       print_r($obj->getSun());
+                   } catch (Exception $e) {
+                   } ?>
+               </div>
+           </div>
+       </div>
 
-    <hr>
-    <!-- Sun #END -->
+       <hr>
+       <!-- Sun #END -->
 
-    <div class="row">
-        <div class="col-md-6">
-            <h2 class="h6">Example use dynamic query -------></h2>
-            <pre>
+       <div class="row">
+           <div class="col-md-6">
+               <h2 class="h6">Example use dynamic query -------></h2>
+               <pre>
 <code>
 swetest -p2 -b1.12.1900 -n15 -s2
 ephemeris of Mercury (-p2) starting on 1 Dec 1900,
@@ -107,52 +161,54 @@ ephemeris of Mercury (-p2) starting on 1 Dec 1900,
      print_r($obj->getOutput())
  </code>
 </pre>
-        </div>
-        <div class="col-md-6">
-            <p>output:</p>
-            <div class="alert alert-secondary" role="alert">
-                <?php
-                $query = [
-                    'p' => 2,
-                    'b' => '1.12.1900',
-                    'n' => 15,
-                    's' => 2,
-                ];
-                try {
-                    $obj->query($query)->execute();
-                } catch (Exception $e) {
-                }
-                print_r($obj->getOutput())
-                ?>
+           </div>
+           <div class="col-md-6">
+               <p>output:</p>
+               <div class="alert alert-secondary" role="alert">
+                   <?php
+                   $query = [
+                       'p' => 2,
+                       'b' => '1.12.1900',
+                       'n' => 15,
+                       's' => 2,
+                   ];
+                   try {
+                       $obj->query($query)->execute();
+                   } catch (Exception $e) {
+                   }
+                   print_r($obj->getOutput())
+                   ?>
 
-            </div>
-        </div>
-    </div>
-    <hr>
+               </div>
+           </div>
+       </div>
+       <hr>
 
-    <div class="row">
-        <div class="col-md-6">
-            <h3 class="h6">Example with repository class -----></h3>
-            <div class="alert alert-success" role="alert">
-                Tip: I think extend the repository class for your needs is the best patrice
-            </div>
-            <pre>
+       <div class="row">
+           <div class="col-md-6">
+               <h3 class="h6">Example with repository class -----></h3>
+               <div class="alert alert-success" role="alert">
+                   Tip: I think extend the repository class for your needs is the best patrice
+               </div>
+               <pre>
         <code>
 // output venus data from today
 print_r($obj->getVenus()
         </code>
     </pre>
-        </div>
-        <div class="col-md-6">
-            <p>output:</p>
-            <div class="alert alert-danger" role="alert">
-                <?php try {
-                    print_r($obj->getVenus());
-                } catch (Exception $e) {
-                } ?>
-            </div>
-        </div>
-    </div>
+           </div>
+           <div class="col-md-6">
+               <p>output:</p>
+               <div class="alert alert-danger" role="alert">
+                   <?php try {
+                       print_r($obj->getVenus());
+                   } catch (Exception $e) {
+                   } ?>
+               </div>
+           </div>
+       </div>
+   </div>
+
 </div>
 
 
