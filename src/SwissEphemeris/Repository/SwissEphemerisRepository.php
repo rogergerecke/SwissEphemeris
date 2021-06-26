@@ -19,7 +19,6 @@ use App\SwissEphemeris\SwissEphemerisException as SwissEphemerisException;
 class SwissEphemerisRepository extends SwissEphemeris
 {
 
-
     /**
      * Get the software version
      * @throws SwissEphemerisException
