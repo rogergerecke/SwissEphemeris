@@ -1,4 +1,47 @@
-Swiss Ephemeris PHP Classes to handle the C-Basic Ephemeris with PHP over shell
+## Swiss Ephemeris PHP Classes
+
+With these PHP classes you can query the ***Swiss Ephemeris Software*** which is based on ***VB***. 
+With the PHP class, the position of astrological objects is queried via the ***exec()*** function through the terminal. 
+My idea for the query was to use a kind of repository class to comfortably configure the query to the ***table file (.eph)***. 
+If you have any suggestions for improvement, write to me on ***GITHUB***.
+
+###To begin, read this README.md file carefully
+
+---
+
+####Important:
+>This software only works with the ***.eph*** files.
+>These must be in the ***/sweph*** folder or the path to the file must be specified in the constructor.
+>I have included a small ***.eph*** table with a small time range
+
+
+The best way to use this classes
+---
+Install via Composer Dependency Manager to your project a PHP project on an Linux system 
+on (*Windows are having problems because the commands are sent to the cmd.exe.*).
+Add to your composer.json file and run `composer update`  after that ***move the .se1 
+files from /demo to /sweph*** folder.
+```
+
+"repositories": [
+    {
+      "type": "github",
+      "name": "rogergerecke/swiss-ephemeris",
+      "url": "https://github.com/rogergerecke/SwissEphemeris.git"
+    }
+  ],
+  "require": {
+  "rogergerecke/swiss-ephemeris": "*",
+  }
+  
+```
+
+
+
+
+
+Notice
+---
 
 **EN**
 
@@ -35,13 +78,17 @@ Info to Swiss Ephemeris
 
 [Swiss Ephemeris mailing list](https://groups.io/g/swisseph)
 
-## Include the de441
+## Not Include the de441
+In the demo Folder you have .se1 files as examples move all to /sweph folder
+its work for example.  Otherwise, copy a .eph file to the folder it's big.
 
 ---------
 
-##### Download 
+##### Download DE441.eph file have 2.7 GB
 
->Download files with time range you need from ftp:astro.ch or un-compiled from ssd.jpl.nasa.gov as ascii compiled under Linux with https://github.com/Bill-Gray/jpl_eph
+> Download files with time range you need from ftp:astro.ch or 
+> un-compiled from ssd.jpl.nasa.gov as ascii compiled under Linux 
+> with https://github.com/Bill-Gray/jpl_eph
 
 DE441 : Created June 2020; compared to DE431, about 7 years of new data have
 been added.
@@ -76,24 +123,7 @@ Do you want more flexibility or have you found a mistake? Open an issues
 
 Please open a Issues if you have a good idea
 
-Install via Composer Dependency Manager
----
 
-Add to your composer.json and run composer update
-```
-
-"repositories": [
-    {
-      "type": "github",
-      "name": "rogergerecke/swiss-ephemeris",
-      "url": "https://github.com/rogergerecke/SwissEphemeris.git"
-    }
-  ],
-  "require": {
-  "rogergerecke/swiss-ephemeris": "*",
-  }
-  
-```
 Docker Help
 ---
 
