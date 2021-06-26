@@ -63,7 +63,7 @@ class SwissEphemerisRepository extends SwissEphemeris
      * @return null |null
      * @throws Exception Get only data for planet
      */
-    public function getByLetter($id = '0', $date = null)
+    public function getByLetter(string $id = '0', $date = null)
     {
 
         $parameter = [
@@ -243,7 +243,7 @@ class SwissEphemerisRepository extends SwissEphemeris
 
     /**
      * @param null $date
-     * @return null |null
+     * @return null
      * @throws Exception
      */
     public function getPluto($date = null)
