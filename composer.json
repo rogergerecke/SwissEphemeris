@@ -6,7 +6,7 @@
   "authors": [
     {
       "name": "Roger Gerecke",
-      "email": "email@example.com"
+      "email": "roger.gerecke@rogergerecke.de"
     }
   ],
   "autoload": {
@@ -32,6 +32,7 @@
     "bill-gray/jpl_eph": "dev-master"
   },
   "require": {
+    "php": ">=7.4",
     "ext-json": "*"
   },
   "config": {
