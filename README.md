@@ -104,6 +104,10 @@ Covers JED -3100015.5, (-13200 AUG 15) to JED 8000016.50, (17191 MAR 15).
 Changelog:
 ---
 
+UPDATE 2.1.5
+---
+- Update to wonderful Swiss Ephemeris 2.10.02
+
 UPDATE 2.1.4
 ---
 - Add Windows 10 support (thanks for Iusses @HSBSINGH)
