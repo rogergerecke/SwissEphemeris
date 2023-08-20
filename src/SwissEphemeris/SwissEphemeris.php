@@ -73,9 +73,11 @@ class SwissEphemeris
     protected $date;
 
     /**
-     * @var null
+     * The query parameters.
+     *
+     * @var string|null
      */
-    protected $query = null;
+    protected ?string $query = null;
 
     /*
      *  Output format SEQ letters:
@@ -133,7 +135,14 @@ class SwissEphemeris
      * @var bool
      * show the debug header output = FALSE
      */
-    protected $debug_header = false;
+    protected bool $debug_header = false;
+
+    /**
+     * Show the header for each response row.
+     *
+     * @var boolean
+     */
+    protected bool $header_for_each_row = false;
 
     protected bool $isWindows = false;
 
@@ -396,19 +405,23 @@ class SwissEphemeris
         $this->date = $date;
     }
 
-
     /**
-     * @return array
+     * Gets the query parameters string.
+     *
+     * @return string
      */
-    public function getQuery(): array
+    public function getQuery(): string
     {
         return $this->query;
     }
 
     /**
-     * @param array $query
+     * Sets the query parameters string.
+     *
+     * @param string $query
+     * @return void
      */
-    public function setQuery(array $query): void
+    public function setQuery(string $query): void
     {
         $this->query = $query;
     }
@@ -521,12 +534,21 @@ class SwissEphemeris
         return $this->debug_header;
     }
 
+    public function isHeaderForEachRow(): bool
+    {
+        return $this->header_for_each_row;
+    }
+
     /**
+     * Set whether to print headers for each line of the response.
+     * 
      * @param bool $debug_header
+     * @param bool $for_each_row Specifies to print an header for each response row.
      */
-    public function setDebugHeader(bool $debug_header): void
+    public function setDebugHeader(bool $debug_header, bool $for_each_row = false): void
     {
         $this->debug_header = $debug_header;
+        $this->header_for_each_row = $for_each_row;
     }
 
     /*
@@ -581,11 +603,13 @@ class SwissEphemeris
             $options[] = '-g'.$this->getDelimiter();
         }
 
-
+        $this->setDebugHeader(true, false);
         // if debug mode on add query option
         if (!$this->isDebugHeader()) {
             // by default remove header debug = FALSE
             $options[] = '-head';
+        } elseif ($this->isHeaderForEachRow()) {
+            $options[] = "+head";
         }
 
         return implode(' ', $options);
@@ -613,11 +637,11 @@ class SwissEphemeris
 
         // save the full query string for console ready to ->execute() the console
         if (!$this->isWindows) {
-            $this->query = "swetest $query";
+            $this->setQuery("swetest $query");
         }
 
         if ($this->isWindows) {
-            $this->query = "swetest.exe $query";
+            $this->setQuery("swetest.exe $query");
         }
 
         return $this;

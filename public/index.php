@@ -8,7 +8,7 @@ use App\SwissEphemeris\SystemCheck;
 // create a new object AND HAVE FUN TO USE IT
 $system = new SystemCheck();
 $obj = new SwissEphemerisRepository();
-$obj = $obj->setIsWindows(true);
+$obj = $obj->setIsWindows(false);
 
 ?>
 <!doctype html>
@@ -144,7 +144,7 @@ $obj = $obj->setIsWindows(true);
                             $obj->query($query)->execute();
                         } catch (Exception $e) {
                         }
-                        print_r($obj->getOutput())
+                        var_dump($obj->getOutput())
                         ?>
                     </p>
                 </div>
@@ -179,7 +179,7 @@ $obj = $obj->setIsWindows(true);
                             $obj->query($query)->execute();
                         } catch (Exception $e) {
                         }
-                        print_r($obj->getOutput())
+                        var_dump($obj->getOutput())
                         ?>
                     </p>
                 </div>
@@ -195,11 +195,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getMercury">
                 <div class="card-header">Function getMercury</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getMercury());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getMercury());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getMercury());
+                            var_dump($obj->getMercury());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -213,11 +213,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getVenus">
                 <div class="card-header">Function getVenus</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getVenus());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getVenus());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getVenus());
+                            var_dump($obj->getVenus());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -231,11 +231,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getMars">
                 <div class="card-header">Function getMars</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getMars());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getMars());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getMars());
+                            var_dump($obj->getMars());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -249,11 +249,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getJupiter">
                 <div class="card-header">Function getJupiter</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getJupiter());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getJupiter());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getJupiter());
+                            var_dump($obj->getJupiter());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -267,11 +267,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getSaturn">
                 <div class="card-header">Function getSaturn</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getSaturn());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getSaturn());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getSaturn());
+                            var_dump($obj->getSaturn());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -285,11 +285,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getUranus">
                 <div class="card-header">Function getUranus</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getUranus());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getUranus());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getUranus());
+                            var_dump($obj->getUranus());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -303,11 +303,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getNeptune">
                 <div class="card-header">Function getSaturn</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getNeptune());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getNeptune());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getNeptune());
+                            var_dump($obj->getNeptune());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -321,11 +321,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getPluto">
                 <div class="card-header">Function getPluto</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getPluto());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getPluto());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getPluto());
+                            var_dump($obj->getPluto());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -345,11 +345,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getSun">
                 <div class="card-header">Function getSun</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getSun());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getSun());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getSun());
+                            var_dump($obj->getSun());
                         } catch (Exception $e) {
                         } ?>
                     </p>
@@ -362,11 +362,11 @@ $obj = $obj->setIsWindows(true);
             <div class="card" id="getMoon">
                 <div class="card-header">Function getMoon</div>
                 <div class="card-body">
-                    <p class="card-text"><code>print_r($obj->getMoon());</code></p>
+                    <p class="card-text"><code>var_dump($obj->getMoon());</code></p>
                     <p class="card-text">
                         <?php
                         try {
-                            print_r($obj->getMoon());
+                            var_dump($obj->getMoon());
                         } catch (Exception $e) {
                         } ?>
                     </p>
